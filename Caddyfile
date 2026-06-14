@@ -1,0 +1,14 @@
+# Caddyfile — PPTI Academic App
+# For development, use localhost. For production, replace with your domain.
+
+localhost {
+    # Frontend (Next.js)
+    handle /* {
+        reverse_proxy frontend:3000
+    }
+
+    # Backend API — uncomment when backend is ready
+    # handle /api/* {
+    #     reverse_proxy backend:8080
+    # }
+}

@@ -1,0 +1,35 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+    restart: unless-stopped
+    networks:
+      - ppti-net
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+    restart: unless-stopped
+    networks:
+      - ppti-net
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  ppti-net:
+    driver: bridge
